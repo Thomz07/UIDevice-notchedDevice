@@ -1,3 +1,6 @@
+# UIDevice+notchedDevice
+Easily get if your iDevice is notched or not
+
 How to use this ? it's really simple
 Copy pasterinio these two files to your project, add the .m file to your Makefile and don't forget to include the .h file and then
 Just use these :
