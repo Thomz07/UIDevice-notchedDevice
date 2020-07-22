@@ -1,25 +1,17 @@
 #include "UIDevice+notchedDevice.h"
+#import <LocalAuthentication/LocalAuthentication.h>
 
 @implementation UIDevice (notchedDevice) // ty burrit0z for making this to work
 
 -(BOOL)isNotched {
-    NSString *modelName = [UIDevice.currentDevice _currentProduct]; // get the device Identifier
-
-    if([modelName isEqualToString:@"iPhone6,1"] || [modelName isEqualToString:@"iPhone6,2"] || [modelName isEqualToString:@"iPhone7,2"] || [modelName isEqualToString:@"iPhone7,1"] || [modelName isEqualToString:@"iPhone8,1"] || [modelName isEqualToString:@"iPhone8,2"] || [modelName isEqualToString:@"iPhone8,4"] || [modelName isEqualToString:@"iPhone9,1"] || [modelName isEqualToString:@"iPhone9,3"] || [modelName isEqualToString:@"iPhone9,2"] || [modelName isEqualToString:@"iPhone9,4"] || [modelName isEqualToString:@"iPhone10,1"] || [modelName isEqualToString:@"iPhone10,4"] || [modelName isEqualToString:@"iPhone10,2"] || [modelName isEqualToString:@"iPhone10,5"] || [modelName isEqualToString:@"iPhone12,8"]) { 
-        return NO;
-    } else {
-        return YES;
-    }
+    LAContext *context = [[LAContext alloc] init];
+    
+    [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil];
+    return context.biometryType == LABiometryTypeFaceID;
 }
 
 -(BOOL)isAnIpad {
-    NSString *model = [UIDevice.currentDevice model]; // get the device model
-
-    if([model isEqualToString:@"iPad"]){
-        return YES;
-    } else {
-        return NO;
-    }
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
 }
 
 -(BOOL)isAnIpod {
