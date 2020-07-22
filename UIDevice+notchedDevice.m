@@ -2,17 +2,17 @@
 #import <LocalAuthentication/LocalAuthentication.h>
 
 @implementation UIDevice (notchedDevice) 
-static NSString *model = [UIDevice.currentDevice model]; // get the device model
 
 -(BOOL)isNotched {
+    
+    if([self isAnIpod] || [self isAnIpad]) { // iPad and iPod are not notched devices
+        return NO;
+    }
+    
     LAContext *context = [[LAContext alloc] init];
     
     [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil];
-    if([model isEqualToString:@"iPod"] || [model isEqualToString:@"iPad"]){ // iPad and iPod are not notched devices
-        return NO;
-    } else {
-        return context.biometryType == LABiometryTypeFaceID; // only devices with FaceID are notched atm (also the latest iPad PRO so that's why i added an iPad check)
-    }
+    return context.biometryType == LABiometryTypeFaceID; // only devices with FaceID are notched atm (also the latest iPad PRO so that's why i added an iPad check)
 }
 
 -(BOOL)isAnIpad {
@@ -20,11 +20,9 @@ static NSString *model = [UIDevice.currentDevice model]; // get the device model
 }
 
 -(BOOL)isAnIpod {
-    if([model isEqualToString:@"iPod"]){
-        return YES;
-    } else {
-        return NO;
-    }
+    NSString const *model = [UIDevice.currentDevice model]; // get the device model
+    
+    return ([model isEqualToString:@"iPod"]);
 } 
 
 @end
